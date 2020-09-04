@@ -1,0 +1,51 @@
+<title>Admin Categories</title>
+
+<%- include('../admin/admin_header'); -%>
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <form action="/admin/category/add-categories">
+                    <input type="submit" value="Add New Categories" name="proceed"
+                        class="checkout-button button alt wc-forward">
+                </form>
+            </div>
+            <div class="col-md-10">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <table cellspacing="0" class="shop_table cart" style="margin-left: 24px;">
+                            <thead>
+                                <tr>
+                                    <th class="product-title">Category</th>
+                                    <th class="product-remove">&nbsp;</th>
+                                    <th class="product-update">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% categories.forEach( function(cat) {%>
+                                <tr class="cart_item <%= cat.slug%>" id="id_<%=cat._id%>">
+                                    <td class="product-title" width="500" ><%= cat.title%></td>
+                                    <td class="product-remove" width="100">
+                                        <a title="Remove this item" class="remove confirm_remove" 
+                                        href="/admin/category/delete-categories/<%= cat._id%>">×</a>
+                                    </td>
+                                    <td class="product-update actions">
+                                        <form action="#">
+                                            <a class="add_to_cart_button" 
+                                            href="/admin/category/edit-categories/<%= cat._id%>">Update</a>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%});%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../admin/admin_footer'); -%>
+<%- messages('messages', locals) %>

@@ -1,0 +1,169 @@
+<%- include('../admin/admin_header'); -%>
+<title>Edit Products</title>
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="single-sidebar">
+                    <h2 class="sidebar-title">Search Products</h2>
+                    <form action="/admin/products/">
+                        <input type="submit" value="Back to all Products">
+                    </form>
+                </div>
+                
+                <div class="single-sidebar">
+                    <h2 class="sidebar-title">Products</h2>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-1.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-thumb-2.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-thumb-3.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-md-8">
+                <div class="product-content-right">
+                    <div class="woocommerce"> 
+                        <form action="/admin/products/edit-products/<%= id%>" method="POST" enctype="multipart/form-data">
+                            <div id="customer_details" class="col2-set">
+                                <div class="col-6">
+                                    <div class="woocommerce-shipping-fields">
+                                        <div class="shipping_address">
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="title">Title <abbr title="required" class="required">*</abbr></label>
+                                                <input type="text" value="<%= title%>" placeholder="title" id="title" name="title" class="input-text ">
+                                            </p>
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="desc">Description <abbr title="required" class="required">*</abbr></label>
+                                                <textarea cols="30" rows="10" id="ta" name="desc" class="input-text "><%= desc%></textarea>
+                                            </p>
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="price">Prices <abbr title="required" class="required">*</abbr></label>
+                                                <input type="text" value="<%= price%>" placeholder="price" id="price" name="price" class="input-text ">
+                                            </p>
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="category">Categories <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <select  id="category" name="category" class="input-text ">
+                                                    <%categories.forEach(function(cat) {%>
+                                                        <option value="<%= cat.slug%>"
+                                                        <%if(cat.slug == "category") {%>
+                                                            selected = "selected"
+                                                        <%}%>
+                                                        ><%= cat.title%></option>
+                                                    <%})%>
+                                                </select>
+                                            </p>
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="noimage">Current Images <abbr title="required" class="required">*</abbr></label>
+                                                <p>
+                                                    <%if (image == "") {%>
+                                                        <img id="noimage" src="/static/img/crossword.PNG">
+                                                    <%} else {%>
+                                                        <img id="noimage" src="/static/product-images/<%= id%>/<%= image%>">
+                                                    <%}%>
+                                                </p>
+                                            </p>
+                                            <p><input type="hidden" value="<%= image%>" name="pImage"></p>
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="title">Upload Images <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="file"  id="images-pr" name="image" class="input-text ">
+                                                <img src="#" id="imgPreview" alt="">
+                                            </p>
+                                            <div class="clear"></div>
+                                            <p id="shipping_address_1_field" class="form-row form-row-wide address-field validate-required">
+                                                <input type="submit" value="Submit">
+                                            </p>
+                                            <div class="clear"></div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="customer_details" class="col2-set">
+                            <div class="col-6">
+                            <h2>
+                                <a class="shipping-calculator-button">Galerry</a>
+                            </h2>
+                                <ul class="gallery">
+                                <% galleryImages.forEach( function(image){%>
+                                    <%if(image != "thumbs") {%>
+                                   <li>
+                                        <img src="/static/product-images/<%= id%>/gallery/thumbs/<%= image%>">&nbsp;
+                                        <a class="confirm_remove" href="/admin/products/delete-image/<%=image%>?id=<%= id%>">Delete</a>
+                                   </li>
+                                   <%}%>
+                                <%})%>
+                                </ul>
+                            </div>
+                        </div>
+                        <form action="/admin/products/product-galerry/<%= id%>" enctype="multipart/form-data" method="POST"
+                            class="dropzone" id="dropzoneForm">
+                                <div class="fallback">
+                                    <input type="file" name="file" id="">
+                                    <input type="submit" value="upload">
+                                </div>
+                        </form>
+                    </div>                       
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../admin/admin_footer'); -%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/basic.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/dropzone.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/dropzone.js"></script>
+<script>
+    function readURL(input){
+        if(input.files && input.files[0]){
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                $('#imgPreview').attr('src', e.target.result).width(100).height(100);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }  
+    }
+
+    $('#images-pr').on('change',function(e){
+        readURL(this);
+    });
+
+    Dropzone.options.dropzoneForm = {
+        acceptedFiles: 'image/*',
+        init : function() {
+            this.on('queuecomplete'), function(file) {
+                setTimeout(function(){
+                    location.reload();
+                },1000)
+            }
+        }
+    }
+</script>

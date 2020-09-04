@@ -1,0 +1,284 @@
+<%- include('header'); -%>
+<div class="site-branding-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="logo">
+                    <h1><a href="./"><img src="/static/img/logo.png"></a></h1>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <form action="/cart/checkout">
+                    <div class="shopping-item">
+                        <a href="/cart/checkout">Cart -
+                            <span class="cart-amunt"></span> <i class="fa fa-shopping-cart">
+                            </i> <span class="product-count">
+                                <%if(typeof cart !== 'undefined') {%>
+                                <%= cart.length%>
+                                <%}else {%> 0
+                                <%}%>
+                        </span>
+                    </a>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div> <!-- End site branding area -->
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-current">
+                    <% pages.forEach(function(page){%>
+                                <%if(page.slug == 'category') {%>
+                                <li class="<%= page.slug ? 'active' : ''%>"><a href="/products/"><%=page.title%></a>
+                                </li>
+                                <%}else if(page.slug == 'home'){%>
+                                <li class="<%= page.slug == 'category' ? 'active' : ''%>"><a
+                                        href="/"><%=page.title%></a></li>
+                                <%}else {%>
+                                <li><a href="<%= page.slug%>"><%=page.title%></a></li>
+                                <%}%>  
+                    <%})%>
+                                </ul>
+                    </div>
+            </div>
+        </div>
+    </div> <!-- End mainmenu area -->
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Categories</h2>
+                        <ul>
+                            <li><a href="/products/products">All products</a></li>
+                            <%categories.forEach(function(c){%>
+                            <li><a href="/products/<%=c.slug%>"><%=c.title%></a></li>
+                            <%})%>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="product-content-right">
+                        <div class="product-breadcroumb">
+                            <a href="">Home</a>
+                            <a href=""><%= product.category%></a>
+                            <a href=""><%= product.title%></a>
+                        </div>
+                        <div class="container text-center-row">
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <%- messages('message', locals) %>
+                                    <% if(errors) {%>
+                                    <% errors.forEach(function(error){ %>
+                                    <div class="alert alert-danger" role="alert">
+                                        <%= error.msg%>
+                                    </div>
+                                    <%});%>
+                                    <%}%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="product-images">
+                                <div class="product-main-img f-image">
+                                    <img src="/static/product-images/<%=product.id%>/<%=product.image%>" alt="">
+                                </div>
+                                <div class="product-gallery gallery">
+                                    <ul class="gallery">
+                                        <% gallerryImage.forEach(function(image){%>
+                                        <%if( image != "thumbs") {%>
+                                        <li>
+                                            <a data-fancybox="gallery"
+                                                href="/static/product-images/<%= product.id%>/gallery/<%= image%>">
+                                                <img src="/static/product-images/<%= product.id%>/gallery/thumbs/<%= image%>"
+                                                    alt="" srcset="">
+                                            </a>
+                                        </li>
+                                        <%}%>
+                                        <%})%>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="product-inner">
+                                <h2 class="product-name"><%= product.title%></h2>
+                                <div class="product-inner-price">
+                                    <ins>$<%=product.price%></ins> <del>$100.00</del>
+                                </div>
+                                <%if(logedIn){%>
+                                <form action="/cart/add/<%=product.slug%>" class="cart">
+                                    <button class="add_to_cart_button" type="submit">Add to cart</button>
+                                </form>
+                                <%}else {%>
+                                    <p>You must be loged In to Purchase Item.</p>
+                                <%}%>
+                                <div class="product-inner-category">
+                                    <p>Category: <a href=""><%= product.category%></a>.
+                                </div>
+
+                                <div role="tabpanel">
+                                    <ul class="product-tab" role="tablist">
+                                        <li role="presentation" class="active"><a href="#home" aria-controls="home"
+                                                role="tab" data-toggle="tab">Description</a></li>
+                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                                                data-toggle="tab">Reviews</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                            <h2>Product Description</h2>
+                                            <p><%= product.desc%></p>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="profile">
+                                            <h2>Reviews</h2>
+                                            <div class="submit-review">
+                                                <p><label for="name">Name</label> <input name="name" type="text"></p>
+                                                <p><label for="email">Email</label> <input name="email" type="email">
+                                                </p>
+                                                <div class="rating-chooser">
+                                                    <p>Your rating</p>
+
+                                                    <div class="rating-wrap-post">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
+                                                </div>
+                                                <p><label for="review">Your review</label> <textarea name="review" id=""
+                                                        cols="30" rows="10"></textarea></p>
+                                                <p><input type="submit" value="Submit"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="related-products-wrapper">
+                        <h2 class="related-products-title">Related Products</h2>
+                        <div class="related-products-carousel">
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="img/product-1.jpg" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+
+                                <h2><a href="">Sony Smart TV - 2015</a></h2>
+
+                                <div class="product-carousel-price">
+                                    <ins>$700.00</ins> <del>$100.00</del>
+                                </div>
+                            </div>
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="img/product-2.jpg" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+
+                                <h2><a href="">Apple new mac book 2015 March :P</a></h2>
+                                <div class="product-carousel-price">
+                                    <ins>$899.00</ins> <del>$999.00</del>
+                                </div>
+                            </div>
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="img/product-3.jpg" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+
+                                <h2><a href="">Apple new i phone 6</a></h2>
+
+                                <div class="product-carousel-price">
+                                    <ins>$400.00</ins> <del>$425.00</del>
+                                </div>
+                            </div>
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="img/product-4.jpg" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+
+                                <h2><a href="">Sony playstation microsoft</a></h2>
+
+                                <div class="product-carousel-price">
+                                    <ins>$200.00</ins> <del>$225.00</del>
+                                </div>
+                            </div>
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="img/product-5.jpg" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+
+                                <h2><a href="">Sony Smart Air Condtion</a></h2>
+
+                                <div class="product-carousel-price">
+                                    <ins>$1200.00</ins> <del>$1355.00</del>
+                                </div>
+                            </div>
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="img/product-6.jpg" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+
+                                <h2><a href="">Samsung gallaxy note 4</a></h2>
+
+                                <div class="product-carousel-price">
+                                    <ins>$400.00</ins>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<%- include('footer'); -%>

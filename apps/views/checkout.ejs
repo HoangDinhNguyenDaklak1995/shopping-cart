@@ -1,0 +1,189 @@
+<%- include('header'); -%>
+<div class="site-branding-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="logo">
+                    <h1><a href="./"><img src="/static/img/logo.png"></a></h1>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <form action="/cart/checkout">
+                    <div class="shopping-item">
+                        <a href="/cart/checkout">Cart -
+                            <span class="cart-amunt"></span> <i class="fa fa-shopping-cart">
+                            </i> <span class="product-count">
+                                <%if(typeof cart !== 'undefined') {%>
+                                <%= cart.length%>
+                                <%}else {%> 0
+                                <%}%>
+                        </span>
+                    </a>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div> <!-- End site branding area -->
+
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div> 
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-current">
+                    <% pages.forEach(function(page){%>
+                                <%if(page.slug == 'home') {%>
+                                <li class="<%= page.slug ? 'active' : ''%>"><a href="/"><%=page.title%></a></li>
+                                <%}else {%>
+                                <li><a href="<%= page.slug%>"><%=page.title%></a></li>
+                                <%}%>  
+                    <%})%>
+                                </ul>
+                    </div>
+            </div>
+        </div>
+    </div> <!-- End mainmenu area -->
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="single category">
+                        <h3 class="side-title">CATEGORIES</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="/products/products" title="">All products <span class="pull-right"></span></a>
+                            </li>
+                            <%categories.forEach(function(c){%>
+                            <li><a href="/products/<%=c.slug%>" title=""><%=c.title%> <span
+                                        class="pull-right"></span></a></li>
+                            <%})%>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <%if(typeof cart !== 'undefined') {%>
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Images</th>
+                                        <th class="product-name">Title</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th></th>
+                                        <th class="product-subtotal">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%var totals = 0%>
+                                    <% cart.forEach(function(p){%>
+                                    <% var sub = parseFloat(p.qty * p.price).toFixed(2)%>
+                                    <%totals += +sub%>
+                                    <tr class="cart_item">
+                                        <td class="product-thumbnail">
+                                            <a href="single-product.html"><img width="145" height="145"
+                                                    alt="poster_1_up" class="shop_thumbnail" src="<%= p.image%>"></a>
+                                        </td>
+
+                                        <td class="product-name"><%= p.title%></a>
+                                        </td>
+
+                                        <td class="product-price">
+                                            <span class="amount"><%= p.price%></span>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="amount"><%= p.qty%></span>
+                                        </td>
+                                        <td class="product-quantity">
+                                            <div class="quantity buttons_added">
+                                                <a href="/cart/update/<%=p.title%>?action=remove">
+                                                    <input type="button" class="minus" value="-">
+                                                </a>
+                                                <a href="/cart/update/<%=p.title%>?action=add">
+                                                    <input type="button" class="plus" value="+">
+                                                </a>
+                                                <a href="/cart/update/<%=p.title%>?action=clear">Clear</a>
+                                            </div>
+                                        </td>
+
+                                        <td class="product-subtotal">
+                                            <span class="amount"><%= sub%></span>
+                                        </td>
+                                    </tr>
+                                    <%})%>
+                                    <tr>
+                                        <td class="actions" colspan="8">
+                                            <div class="coupon">
+                                                <label for="coupon_code">Total:</label>
+                                                <a> $ <%= parseFloat(totals).toFixed(2)%></a>
+                                            </div>
+                                            <input type="button" value="Clear Cart" name="update_cart"
+                                                class="button checkout-button">
+                                            <a type="button" value="Checkout" name="proceed"
+                                                class="checkout-button button alt buynow"
+                                                href="#">buy now</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" class="pp">
+                                <input type="hidden" name="cmd" value="_cart">
+                                <input type="hidden" name="upload" value="1">
+                                <input type="hidden" name="business" value="you@youremail.com">
+                                <%var num = 0;%>
+                                <% cart.forEach(function(p){%>
+                                <%num++%>
+                                <input type="hidden" name="quantity_<%=num%>" value="<%=p.qty%>" />
+                                <input type="hidden" name="item_name_<%=num%>" value="<%=p.title%>" />
+                                <input type="hidden" name="amount_<%=num%>" value="<%=p.price%>" />
+                                <%});%>
+                                <input type="hidden" name="currency_code" value="USD">
+                                <input type="hidden" name="amount" value="<%= totals%>">
+                                <input type="image" class="iamgePaypal" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif"
+                                    name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+                            </form>
+                            <%} else {%>
+                            <h3 class="text-center">Your Cart is Empty</h3>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('footer'); -%>
+    <script>
+        $(function () {
+            $('input[name="update_cart"]').on('click', function () {
+                if (!confirm('confirm Deletion')) {
+                    return false;
+                } else {
+                    window.location = '/cart/clear';
+                }
+            });
+
+            $('a.buynow').on('click', function (e) {
+                e.preventDefault(); 
+                $.ajax({
+                    url: "/cart/buynow",
+                    type : 'get',
+                    context: document.body,
+                    dataType: 'html'
+                    }).done(function() {
+                        $('form.pp input[type=image]').click();
+                        $('.ajaxbg').show()
+                    });
+            });
+        })
+    </script>

@@ -1,0 +1,87 @@
+<%- include('../admin/admin_header'); -%>
+<title>Edit page</title>
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="single-sidebar">
+                    <h2 class="sidebar-title">Search Products</h2>
+                    <form action="/admin/pages/admin">
+                        <input type="submit" value="Back to all Page">
+                    </form>
+                </div>
+                
+                <div class="single-sidebar">
+                    <h2 class="sidebar-title">Products</h2>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-1.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-thumb-2.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-thumb-3.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                    <div class="thubmnail-recent">
+                        <img src="/static/img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                        <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                        <div class="product-sidebar-price">
+                            <ins>$700.00</ins> <del>$100.00</del>
+                        </div>                             
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-md-8">
+                <div class="product-content-right">
+                    <div class="woocommerce"> 
+                        <form action="/admin/pages/edit-page/<%= id%>" class="checkout" method="POST">
+                            <div id="customer_details" class="col2-set">
+                                <div class="col-6">
+                                    <div class="woocommerce-shipping-fields">
+                                        <div class="shipping_address">
+                                            <p id="shipping_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="title">Title <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="text" value="<%= title%>" placeholder="title" id="title" name="title" class="input-text ">
+                                            </p>
+                                            <p id="shipping_last_name_field" class="form-row form-row-last validate-required">
+                                                <label class="" for="shipping_last_name">Slug <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="text" value="<%= slug%>" placeholder="slug" id="slug" name="slug" class="input-text ">
+                                            </p>
+                                            <div class="clear"></div>
+                                            <p id="shipping_company_field" class="form-row form-row-wide">
+                                                <label class="" for="shipping_company">Content</label>
+                                                <textarea  name="content" class="input-text" id="ta" placeholder="Content" cols="30" rows="10"><%= content%></textarea>
+                                            </p>
+                                            <p id="shipping_address_1_field" class="form-row form-row-wide address-field validate-required">
+                                                <input type="submit" value="Submit">
+                                            </p>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>                       
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../admin/admin_footer'); -%>

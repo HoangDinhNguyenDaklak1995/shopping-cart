@@ -1,0 +1,64 @@
+<title>Admin Pages</title>
+
+<%- include('../admin/admin_header'); -%>
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <form action="/admin/pages/add-page">
+                    <input type="submit" value="Add New page" name="proceed"
+                        class="checkout-button button alt wc-forward">
+                </form>
+            </div>
+            <div class="col-md-10">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <table cellspacing="0" class="shop_table cart">
+                            <thead>
+                                <tr>
+                                    <th class="product-title">Title</th>
+                                    <th class="product-remove">&nbsp;</th>
+                                    <th class="product-update">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% pages.forEach( function(page) {%>
+                                <tr class="cart_item <%= page.slug%>" id="id_<%=page._id%>">
+                                    <td class="product-title"><%= page.title%></td>
+                                    <% if (page.slug == "home") {%>
+                                        <td class="product-remove" width="100"></td>
+                                    <%} else {%>
+                                    <td class="product-remove" width="100">
+                                        <a title="Remove this item" class="remove confirm_remove" 
+                                        href="/admin/pages/delete-page/<%= page._id%>">×</a>
+                                    </td>
+                                    <%}%>
+                                    <td class="product-update actions">
+                                        <form action="#">
+                                            <a class="add_to_cart_button" 
+                                            href="/admin/pages/edit-page/<%= page._id%>">Update</a>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%});%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../admin/admin_footer'); -%>
+<script>
+    $('tbody').sortable({
+        items : "tr:not('.home')",
+        placeholder : "ui-state-hightlight",
+        update : function(){
+            var ids =  $('tbody').sortable('serialize');
+            var url = "/admin/pages/reorder-page";
+            $.post( url, ids)
+        }
+    });
+</script>

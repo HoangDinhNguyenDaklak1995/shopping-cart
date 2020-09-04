@@ -1,0 +1,72 @@
+<title>Admin Products</title>
+
+<%- include('../admin/admin_header'); -%>
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <form action="/admin/products/add-Products">
+                    <input type="submit" value="Add New Products" name="proceed"
+                        class="checkout-button button alt wc-forward">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">         
+            <div class="col-md-12">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <% if(count > 0) {%>
+                            <table cellspacing="0" class="shop_table cart" style="margin-left: 24px;">
+                                <thead>
+                                    <tr>
+                                        <th class="product-title">Products</th>
+                                        <th class="product-title">Price</th>
+                                        <th class="product-title">Categories</th>
+                                        <th class="product-title">Image</th>
+                                        <th class="product-remove">&nbsp;</th>
+                                        <th class="product-update">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% products.forEach( function(product) {%>
+                                    <tr class="cart_item <%= product.slug%>" id="id_<%=product._id%>">
+                                        <td class="product-title" width="800" ><%= product.title%></td>
+                                        <td class="product-title" width="20" ><%= parseFloat(product.price).toFixed(2)%></td>
+                                        <td class="product-title" width="500" ><%= product.category%></td>
+                                        <td class="product-title" width="300" >
+                                            <% if(product.image == "") {%>
+                                                <img id="noimage" src="/static/img/crossword.PNG">
+                                            <%} else {%>
+                                                <img id="noimage" src="/static/product-images/<%= product._id%>/<%= product.image%>">
+                                            <%}%>
+                                        </td>
+                                        <td class="product-remove" width="50">
+                                            <a title="Remove this item" class="remove confirm_remove" 
+                                            href="/admin/products/delete-products/<%= product._id%>">×</a>
+                                        </td>
+                                        <td class="product-update actions">
+                                            <form action="#">
+                                                <a class="add_to_cart_button" 
+                                                href="/admin/products/edit-products/<%= product._id%>">Update</a>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <%});%>
+                                </tbody>
+                            </table>
+                        <% }else {%>
+                            <h3 class="text-center"> No exist Products </h3>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../admin/admin_footer'); -%>
+<%- messages('messages', locals) %>
+

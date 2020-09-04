@@ -1,0 +1,50 @@
+<%- include('header'); -%>
+<%- include('banner'); -%>
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="product-content-right">
+                    <div class="product-breadcroumb">
+                        <a href="/index">Home</a>
+                        <%product.forEach(function(c){%>
+                        <a href="/products/<%=c.category%>/<%= c.slug%>"><%= c.slug%></a>
+                        <%})%>
+                    </div>
+                </div>
+                <div class="related-products-wrapper">
+                    <h2 class="related-products-title">Related Products</h2>
+                    <% product.forEach(function(p){%>
+                        <%if (typeof p.title !== 'undefined' ||  p.title !== '') {%>
+                    <div class="col-md-3">
+                        <div class="related-products-carousel">
+                            <div class="single-product">
+                                <div class="product-upper product-f-image ">
+                                    <img src="/static/product-images/<%= p._id%>/<%= p.image%>">
+                                    <div class="product-hover">
+                                        <a href="/cart/add/<%=p.slug%>" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
+                                            cart</a>
+                                        <a href="/products/<%=p.category%>/<%=p.slug%>" class="view-details-link"><i
+                                                class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+                                <h2><a href="/products/<%=p.category%>/<%=p.slug%>"><%= p.title%></a></h2>
+                                <div class="product-carousel-price">
+                                    <ins>$<%= parseFloat(p.price).toFixed(2)%></ins><del>$100.00</del>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%} else {%>
+                        <div class="product-bit-title text-center">
+                            <h2>Product Is Empty</h2>
+                        </div>
+                    <%}%>
+                    <%})%>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <%- include('footer'); -%>
