@@ -1,14 +1,14 @@
 <div class="maincontent-area">
     <div class="container">
         <div class="row">
-            <%product.forEach(function(c){%>
             <div class="col-md-12">
                 <div class="product-content-right fs-content">
                     <div class="product-breadcroumb">                
-                        <a href="/products/<%=c.category%>"><%= c.category%></a>  
+                        
                     </div>
                 </div>
-                <div class="latest-product">
+                <%product.forEach(function(c){%>
+                <div class="latest-product col-md-3">
                     <div class="product-carousel">
                         <div class="single-product">
                             <div class="product-f-image product-upper">
@@ -28,8 +28,8 @@
                         </div>
                     </div>
                 </div>
+                <%})%>
             </div>
-            <%})%>
         </div>
     </div>
 </div> <!-- End main content area -->
